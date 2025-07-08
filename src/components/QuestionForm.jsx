@@ -190,8 +190,12 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 				</FileUploadRoot>
 
 				<HStack width="full" justifyContent="space-between">
-					<Button variant="outline" onClick={() => onCancel()}>キャンセル</Button>
-					<Button type="submit">送信</Button>
+					<Button variant="outline" onClick={() => {
+						if (confirm('保存してないデータは破棄されますが本当にキャンセルしますか?')) {
+							onCancel()
+						}
+					}}>キャンセル</Button>
+					<Button type="submit">保存</Button>
 				</HStack>
 			</VStack>
 		</Box>

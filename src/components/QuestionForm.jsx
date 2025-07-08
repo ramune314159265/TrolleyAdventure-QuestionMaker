@@ -88,7 +88,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 								<AccordionItem key={field.id} value={index}>
 									<Box position="relative">
 										<AccordionItemTrigger>
-											<Span flex="1">{index + 1}個目</Span>
+											<Span flex="1">{index + 1}. {watch(`options.${index}.content`)}</Span>
 											<AccordionItemIndicator></AccordionItemIndicator>
 										</AccordionItemTrigger>
 										<AbsoluteCenter axis="vertical" insetEnd="36px">

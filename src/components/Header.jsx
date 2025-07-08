@@ -5,7 +5,7 @@ export const Header = () => {
 		<Box bg="bg.panel" height="full" px="1rem" userSelect="none">
 			<Flex height="full" alignItems="center" justifyContent="space-between">
 				<Heading>
-					トロッコアドベンチャー問題作成
+					トロッコアドベンチャー問題作成用
 				</Heading>
 				<HStack>
 				</HStack>

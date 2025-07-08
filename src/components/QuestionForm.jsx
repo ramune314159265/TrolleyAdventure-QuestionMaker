@@ -1,7 +1,7 @@
-import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, Text, VStack } from '@chakra-ui/react'
+import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, IconButton, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, Text, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
-import { HiPlusCircle } from 'react-icons/hi'
+import { HiPlusCircle, HiTrash } from 'react-icons/hi'
 import { z } from 'zod'
 import { categories } from '../utils/categories'
 
@@ -88,11 +88,16 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 											<AccordionItemIndicator></AccordionItemIndicator>
 										</AccordionItemTrigger>
 										<AbsoluteCenter axis="vertical" insetEnd="36px">
-											<Button
+											<IconButton
 												size="xs"
+												variant="subtle"
 												colorPalette="red"
-												onClick={() => remove(index)}
-											>削除</Button>
+												onClick={() => {
+													if (confirm('本当に削除しますか?')) {
+														remove(index)
+													}
+												}}
+											><HiTrash /></IconButton>
 										</AbsoluteCenter>
 									</Box>
 									<AccordionItemContent>

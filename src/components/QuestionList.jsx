@@ -9,7 +9,7 @@ export const QuestionList = () => {
 	return (
 		<>
 			<VStack gap={4} w="full" p="8px 16px" alignItems="stretch">
-				<Box>作成した問題(クリックして編集)</Box>
+				<Box>作成した問題</Box>
 				{
 					Object.values(questions)
 						.sort((a, b) => a.index - b.index)

@@ -1,10 +1,21 @@
 import { atom, useAtom } from 'jotai'
+import { useEffect } from 'react'
 import { db } from '../db'
 
 export const questionsAtom = atom({})
 
 export const useQuestion = () => {
 	const [questions, setQuestions] = useAtom(questionsAtom)
+	useEffect(() => {
+		db.questions.toArray()
+			.then(questions => {
+				const data = {}
+				questions.forEach(questions => {
+					data[questions.id] = questions
+				})
+				setQuestions(data)
+			})
+	}, [setQuestions])
 
 	const addQuestion = async ({ id, group, content, options, answer }) => {
 		const index = Object.keys(questions).length
@@ -31,7 +42,7 @@ export const useQuestion = () => {
 		setQuestions(copy)
 	}
 
-	const editCategory = async (id, newData) => {
+	const editQuestion = async (id, newData) => {
 		try {
 			await db.questions.update(id, newData)
 		} catch (e) {
@@ -45,5 +56,5 @@ export const useQuestion = () => {
 		setQuestions(copy)
 	}
 
-	return [questions, { addQuestion, deleteQuestion, editCategory }]
+	return [questions, { addQuestion, deleteQuestion, editQuestion }]
 }

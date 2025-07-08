@@ -11,7 +11,7 @@ export const QuestionAddButton = () => {
 	const submitHandle = async data => {
 		setDialogOpen(false)
 		const id = crypto.randomUUID()
-		addQuestion({ id, group: data.group, content: data.content, options: data.options, answer: data.answer })
+		addQuestion({ id, ...data })
 	}
 
 	return (

@@ -191,7 +191,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 
 				<HStack width="full" justifyContent="space-between">
 					<Button variant="outline" onClick={() => {
-						if (confirm('保存してないデータは破棄されますが本当にキャンセルしますか?')) {
+						if (confirm('保存してないデータを破棄しますか?')) {
 							onCancel()
 						}
 					}}>キャンセル</Button>

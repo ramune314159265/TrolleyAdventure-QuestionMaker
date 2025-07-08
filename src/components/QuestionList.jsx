@@ -1,7 +1,6 @@
 import { VStack } from '@chakra-ui/react'
 import { useQuestion } from '../atoms/questions'
 import { QuestionAddButton } from './QuestionAddButton'
-import { QuestionForm } from './QuestionForm'
 
 export const QuestionList = () => {
 	const [questions] = useQuestion()
@@ -18,7 +17,6 @@ export const QuestionList = () => {
 					})
 			} */}
 			<QuestionAddButton></QuestionAddButton>
-			<QuestionForm></QuestionForm>
 		</VStack>
 	)
 }

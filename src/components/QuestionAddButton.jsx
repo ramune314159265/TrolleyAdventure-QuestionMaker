@@ -1,10 +1,10 @@
 import { Button } from '@chakra-ui/react'
-import { HiMiniPlusCircle } from 'react-icons/hi2'
+import { HiPlusCircle } from 'react-icons/hi'
 
 export const QuestionAddButton = () => {
 	return (
 		<Button w="full">
-			<HiMiniPlusCircle /> 問題を追加
+			<HiPlusCircle /> 問題を追加
 		</Button>
 	)
 }

@@ -1,4 +1,4 @@
-import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadFileText, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, VStack } from '@chakra-ui/react'
+import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadFileText, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiPlusCircle } from 'react-icons/hi'
@@ -23,7 +23,7 @@ const schema = z.object({
 	})
 })
 
-export const QuestionForm = ({ defaultValues }) => {
+export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 	const {
 		register,
 		control,
@@ -57,7 +57,7 @@ export const QuestionForm = ({ defaultValues }) => {
 	}
 
 	return (
-		<Box as="form" onSubmit={handleSubmit(onSubmit)} p={4} w="full">
+		<Box as="form" onSubmit={handleSubmit(onDataSubmit)} w="full">
 			<VStack gap={4} w="full" align="stretch">
 				<FieldRoot>
 					<FieldLabel>班・カテゴリー</FieldLabel>
@@ -182,7 +182,10 @@ export const QuestionForm = ({ defaultValues }) => {
 					</Input>
 				</FileUploadRoot>
 
-				<Button type="submit" colorScheme="blue">送信</Button>
+				<HStack width="full" justifyContent="space-between">
+					<Button variant="outline" onClick={() => onCancel()}>キャンセル</Button>
+					<Button type="submit">送信</Button>
+				</HStack>
 			</VStack>
 		</Box>
 	)

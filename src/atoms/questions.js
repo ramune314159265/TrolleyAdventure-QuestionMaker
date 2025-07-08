@@ -1,4 +1,5 @@
 import { atom, useAtom } from 'jotai'
+import { db } from '../db'
 
 export const questionsAtom = atom({})
 

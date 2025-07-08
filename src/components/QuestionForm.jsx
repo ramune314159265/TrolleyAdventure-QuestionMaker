@@ -1,4 +1,4 @@
-import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadFileText, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, VStack } from '@chakra-ui/react'
+import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, Text, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiPlusCircle } from 'react-icons/hi'
@@ -51,10 +51,6 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 		control,
 		name: 'options'
 	})
-
-	const onSubmit = data => {
-		console.log(data)
-	}
 
 	return (
 		<Box as="form" onSubmit={handleSubmit(onDataSubmit)} w="full">
@@ -119,7 +115,9 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 												<FileUploadLabel>不正解の選択肢の画像</FileUploadLabel>
 												<Input asChild>
 													<FileUploadTrigger>
-														<FileUploadFileText></FileUploadFileText>
+														{watch(`options.${index}.image`)?.name ??
+															<Text color="fg.muted">ここを押して画像を選択</Text>
+														}
 													</FileUploadTrigger>
 												</Input>
 											</FileUploadRoot>
@@ -155,7 +153,9 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 					<FileUploadLabel>正解の選択肢の画像</FileUploadLabel>
 					<Input asChild>
 						<FileUploadTrigger>
-							<FileUploadFileText></FileUploadFileText>
+							{watch('answer.image')?.name ??
+								<Text color="fg.muted">ここを押して画像を選択</Text>
+							}
 						</FileUploadTrigger>
 					</Input>
 				</FileUploadRoot>
@@ -177,7 +177,9 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 					<FileUploadLabel>解説の画像</FileUploadLabel>
 					<Input asChild>
 						<FileUploadTrigger>
-							<FileUploadFileText></FileUploadFileText>
+							{watch('answer.explanationImage')?.name ??
+								<Text color="fg.muted">ここを押して画像を選択</Text>
+							}
 						</FileUploadTrigger>
 					</Input>
 				</FileUploadRoot>

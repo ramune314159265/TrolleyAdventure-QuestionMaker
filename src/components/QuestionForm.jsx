@@ -1,9 +1,11 @@
 import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, IconButton, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, Text, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
 import { HiPlusCircle, HiTrash } from 'react-icons/hi'
 import { z } from 'zod'
 import { categories } from '../utils/categories'
+import { SelectScenePreview } from './SelectScenePreview'
 
 const optionBaseSchema = z.object({
 	content: z.string().optional(),
@@ -40,6 +42,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 		handleSubmit,
 		watch,
 		setValue,
+		getValues,
 		formState: { errors, isDirty }
 	} = useForm({
 		resolver: zodResolver(formSchema),
@@ -61,6 +64,8 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 		control,
 		name: 'options'
 	})
+
+	const [previewData, setPreviewData] = useState(getValues())
 
 	return (
 		<Box as="form" onSubmit={handleSubmit(onDataSubmit)} w="full">
@@ -202,6 +207,10 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 						</FileUploadTrigger>
 					</Input>
 				</FileUploadRoot>
+
+				<Text>プレビュー</Text>
+				<Button onClick={() => setPreviewData(getValues())}>プレビューを更新する</Button>
+				<SelectScenePreview data={previewData}></SelectScenePreview>
 
 				<HStack width="full" justifyContent="space-between">
 					<Button variant="outline" onClick={() => {

@@ -1,6 +1,21 @@
 export const categories = {
 	eel: 'ウナギ班',
+	ai_bias: 'AIバイアス班',
+	algae: '温泉藻班',
+	card_game: 'カードゲーム班',
+	jellyfish: 'クラゲ班',
+	cactus: 'サボテン班',
+	earthquake: '地震班',
+	water_examination: '水質調査班',
+	natto: '納豆班',
+	knife: '刃物班',
+	biotope: 'ビオトープ班',
+	matcha: '抹茶班',
+	daphnia: 'ミジンコ班',
+	rocket: 'ロケット班',
+	unknown_group: '（この一覧にない班）',
 	chemical: 'その他化学',
 	physics: 'その他物理',
-	biological: 'その他生物'
+	biological: 'その他生物',
+	other: 'その他',
 }

@@ -30,7 +30,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 		handleSubmit,
 		watch,
 		setValue,
-		formState: { errors }
+		formState: { errors, isDirty }
 	} = useForm({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -112,7 +112,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 												onChange={e => {
 													const file = e.target.files?.[0]
 													if (file) {
-														setValue(`options.${index}.image`, file)
+														setValue(`options.${index}.image`, file, { shouldDirty: true })
 													}
 												}}
 											>
@@ -150,7 +150,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 					onChange={e => {
 						const file = e.target.files?.[0]
 						if (file) {
-							setValue(`answer.image`, file)
+							setValue(`answer.image`, file, { shouldDirty: true })
 						}
 					}}
 				>
@@ -174,7 +174,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 					onChange={e => {
 						const file = e.target.files?.[0]
 						if (file) {
-							setValue(`answer.explanationImage`, file)
+							setValue(`answer.explanationImage`, file, { shouldDirty: true })
 						}
 					}}
 				>
@@ -191,7 +191,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 
 				<HStack width="full" justifyContent="space-between">
 					<Button variant="outline" onClick={() => {
-						if (confirm('保存してないデータを破棄しますか?')) {
+						if (!isDirty || confirm('保存してないデータを破棄しますか?')) {
 							onCancel()
 						}
 					}}>キャンセル</Button>

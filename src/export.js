@@ -22,11 +22,30 @@ export const exportQuestionsData = async () => {
 		.filter(file => file)
 		.map(file => {
 			const blobReader = new BlobReader(file)
-			return zipWriter.add(crypto.randomUUID(), blobReader)
+			const id = crypto.randomUUID()
+			file.id = id
+			return zipWriter.add(id, blobReader)
 		})
 	)
 
-	const questionsJsonReader = new TextReader(JSON.stringify(questions))
+	const questionsJsonReader = new TextReader(JSON.stringify(
+		questions.map(question => {
+			return {
+				...question,
+				answer: {
+					...question.answer,
+					image: question.answer.image?.id ?? '',
+					explanationImage: question.answer.explanationImage?.id ?? '',
+				},
+				options: question.options.flatMap(option => {
+					return {
+						...option,
+						image: option.image?.id ?? '',
+					}
+				})
+			}
+		})
+	))
 	await zipWriter.add('questions.json', questionsJsonReader)
 
 	await zipWriter.close()

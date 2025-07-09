@@ -33,7 +33,6 @@ export const ExplanationScenePreview = ({ data }) => {
 				height: 720
 			})
 			pixiContainer.current.appendChild(app.canvas)
-			window.__PIXI_DEVTOOLS__ = { app }
 			app.canvas.style.width = 'stretch'
 			appRef.current = app
 		})()

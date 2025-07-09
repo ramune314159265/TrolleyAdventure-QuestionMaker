@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
-import { Application, Assets, Container } from 'pixi.js'
+import { Application, Container } from 'pixi.js'
 import { useEffect, useRef } from 'react'
 import { FitText } from '../pixiComponents/fitText'
 import { HologramContainer } from '../pixiComponents/hologramContainer'
@@ -25,11 +25,8 @@ export const SelectScenePreview = ({ data }) => {
 				height: 720
 			})
 			pixiContainer.current.appendChild(app.canvas)
-			window.__PIXI_DEVTOOLS__ = { app }
 			app.canvas.style.width = 'stretch'
 			appRef.current = app
-			Assets.addBundle('font', [{ alias: 'Main', src: 'main.otf' }])
-			await Assets.loadBundle('font')
 		})()
 		return () => {
 			appRef.current?.destroy?.(true, { children: true })
@@ -37,7 +34,6 @@ export const SelectScenePreview = ({ data }) => {
 	}, [])
 
 	useEffect(() => {
-		console.log(data, appRef.current)
 		if (!appRef.current) {
 			return
 		}
@@ -45,8 +41,6 @@ export const SelectScenePreview = ({ data }) => {
 		while (app.stage.children[0]) {
 			app.stage.removeChild(app.stage.children[0])
 		}
-
-		const options = [data.answer, data.options[Math.floor(Math.random() * data.options.length)]].toSorted(() => Math.random() - 0.5)
 
 		const topText = new FitText({
 			content: data.content,
@@ -77,7 +71,7 @@ export const SelectScenePreview = ({ data }) => {
 			optionsContainer.addChild(optionHologram)
 			optionHologram.show()
 			const optionText = new FitText({
-				content: options[i]?.content,
+				content: data.options[i]?.content,
 				styleOverride: {
 					fill: '#80ffce'
 				},

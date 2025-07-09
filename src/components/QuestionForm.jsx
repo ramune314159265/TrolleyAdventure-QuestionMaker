@@ -5,6 +5,7 @@ import { useFieldArray, useForm } from 'react-hook-form'
 import { HiPlusCircle, HiTrash } from 'react-icons/hi'
 import { z } from 'zod'
 import { categories } from '../utils/categories'
+import { ExplanationScenePreview } from './ExplanationScenePreview'
 import { SelectScenePreview } from './SelectScenePreview'
 
 const optionBaseSchema = z.object({
@@ -209,8 +210,15 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 				</FileUploadRoot>
 
 				<Text>プレビュー</Text>
-				<Button onClick={() => setPreviewData(getValues())}>プレビューを更新する</Button>
+				<Button onClick={() => {
+					const data = getValues()
+					const option = data.options[Math.floor(Math.random() * data.options.length)]
+					const options = [data.answer, option].toSorted(() => Math.random() - 0.5)
+					data.options = options
+					setPreviewData(data)
+				}}>プレビューを再生成する</Button>
 				<SelectScenePreview data={previewData}></SelectScenePreview>
+				<ExplanationScenePreview data={previewData}></ExplanationScenePreview>
 
 				<HStack width="full" justifyContent="space-between">
 					<Button variant="outline" onClick={() => {

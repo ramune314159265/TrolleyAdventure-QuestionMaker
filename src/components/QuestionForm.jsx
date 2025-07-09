@@ -5,22 +5,32 @@ import { HiPlusCircle, HiTrash } from 'react-icons/hi'
 import { z } from 'zod'
 import { categories } from '../utils/categories'
 
-const schema = z.object({
-	content: z.string(),
-	group: z.string(),
-	options: z.array(
-		z.object({
-			content: z.string().optional(),
-			image: z.instanceof(File).optional(),
-			explanation: z.string().optional()
-		})
-	),
-	answer: z.object({
-		content: z.string().optional(),
-		image: z.instanceof(File).optional(),
-		explanation: z.string().optional(),
+const optionBaseSchema = z.object({
+	content: z.string().optional(),
+	image: z.instanceof(File).optional(),
+	explanation: z.string().optional()
+})
+
+const optionSchema = optionBaseSchema
+	.refine(data => data.content?.trim() || data.image instanceof File, {
+		message: '選択肢のテキストまたは画像のどちらか一つ以上必要です',
+		path: ['content']
+	})
+
+const answerSchema = optionBaseSchema
+	.extend({
 		explanationImage: z.instanceof(File).optional()
 	})
+	.refine(data => data.content?.trim() || data.image instanceof File, {
+		message: '選択肢のテキストまたは画像のどちらか一つ以上必要です',
+		path: ['content']
+	})
+
+const formSchema = z.object({
+	content: z.string().min(1, '問題文は必須です'),
+	group: z.string().min(1, '班・カテゴリーは必須です'),
+	options: z.array(optionSchema).min(1, '不正解の択は一つ以上必要です'),
+	answer: answerSchema
 })
 
 export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
@@ -32,7 +42,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 		setValue,
 		formState: { errors, isDirty }
 	} = useForm({
-		resolver: zodResolver(schema),
+		resolver: zodResolver(formSchema),
 		defaultValues: {
 			content: '',
 			group: '',
@@ -55,7 +65,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 	return (
 		<Box as="form" onSubmit={handleSubmit(onDataSubmit)} w="full">
 			<VStack gap={4} w="full" align="stretch">
-				<FieldRoot>
+				<FieldRoot invalid={!!errors.group}>
 					<FieldLabel>班・カテゴリー</FieldLabel>
 					<NativeSelectRoot>
 						<NativeSelectField
@@ -70,13 +80,13 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 					</NativeSelectRoot>
 					<FieldErrorText>{errors.group?.message}</FieldErrorText>
 				</FieldRoot>
-				<FieldRoot>
+				<FieldRoot invalid={!!errors.content}>
 					<FieldLabel>問題文(だいたい20文字以下)</FieldLabel>
 					<Input {...register('content')} ></Input>
 					<FieldErrorText>{errors.content?.message}</FieldErrorText>
 				</FieldRoot>
 
-				<FieldRoot>
+				<FieldRoot invalid={!!errors.options}>
 					<FieldLabel>不正解の選択肢(ランダムで一つ選ばれる)</FieldLabel>
 					<VStack gap={4} bg="gray.subtle" w="full" p={4}>
 						<AccordionRoot spaceY="4" collapsible>
@@ -102,12 +112,13 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 									</Box>
 									<AccordionItemContent>
 										<VStack gap={4} w="full" align="stretch" pb={4}>
-											<FieldRoot>
+											<FieldRoot invalid={!!errors.options?.[index]?.content}>
 												<FieldLabel>不正解の選択肢</FieldLabel>
 												<Input {...register(`options.${index}.content`)} ></Input>
-												<FieldErrorText>{errors.options?.index?.content?.message}</FieldErrorText>
+												<FieldErrorText>{errors.options?.[index]?.content?.message}</FieldErrorText>
 											</FieldRoot>
 											<FileUploadRoot
+												invalid={!!errors.options?.[index]?.image}
 												accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
 												onChange={e => {
 													const file = e.target.files?.[0]
@@ -117,7 +128,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 												}}
 											>
 												<FileUploadHiddenInput></FileUploadHiddenInput>
-												<FileUploadLabel>不正解の選択肢の画像</FileUploadLabel>
+												<FileUploadLabel>不正解の選択肢の画像(できるだけ正方形に近い形)</FileUploadLabel>
 												<Input asChild>
 													<FileUploadTrigger>
 														{watch(`options.${index}.image`)?.name ??
@@ -126,10 +137,10 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 													</FileUploadTrigger>
 												</Input>
 											</FileUploadRoot>
-											<FieldRoot>
+											<FieldRoot invalid={!!errors.options?.[index]?.explanation}>
 												<FieldLabel>不正解の解説</FieldLabel>
 												<Input {...register(`options.${index}.explanation`)} ></Input>
-												<FieldErrorText>{errors.options?.index?.explanation?.message}</FieldErrorText>
+												<FieldErrorText>{errors.options?.[index]?.explanation?.message}</FieldErrorText>
 											</FieldRoot>
 										</VStack>
 									</AccordionItemContent>
@@ -138,14 +149,16 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 						</AccordionRoot>
 						<Button onClick={() => append({ content: '', explanation: '' })} w="full"><HiPlusCircle /> 不正解の選択肢を追加</Button>
 					</VStack>
+					<FieldErrorText>{errors.options?.message}</FieldErrorText>
 				</FieldRoot>
 
-				<FieldRoot>
+				<FieldRoot invalid={!!errors.answer?.content}>
 					<FieldLabel>正解の選択肢</FieldLabel>
 					<Input {...register(`answer.content`)} ></Input>
 					<FieldErrorText>{errors.answer?.content?.message}</FieldErrorText>
 				</FieldRoot>
 				<FileUploadRoot
+					invalid={!!errors.answer?.image}
 					accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
 					onChange={e => {
 						const file = e.target.files?.[0]
@@ -155,7 +168,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 					}}
 				>
 					<FileUploadHiddenInput></FileUploadHiddenInput>
-					<FileUploadLabel>正解の選択肢の画像</FileUploadLabel>
+					<FileUploadLabel>正解の選択肢の画像(できるだけ正方形に近い形)</FileUploadLabel>
 					<Input asChild>
 						<FileUploadTrigger>
 							{watch('answer.image')?.name ??
@@ -164,12 +177,13 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 						</FileUploadTrigger>
 					</Input>
 				</FileUploadRoot>
-				<FieldRoot>
+				<FieldRoot invalid={!!errors.answer?.explanation}>
 					<FieldLabel>正解の解説</FieldLabel>
 					<Input {...register(`answer.explanation`)} ></Input>
 					<FieldErrorText>{errors.answer?.explanation?.message}</FieldErrorText>
 				</FieldRoot>
 				<FileUploadRoot
+					invalid={!!errors.answer?.explanationImage}
 					accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
 					onChange={e => {
 						const file = e.target.files?.[0]

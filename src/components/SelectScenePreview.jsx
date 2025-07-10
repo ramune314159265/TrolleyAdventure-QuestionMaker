@@ -25,7 +25,8 @@ export const SelectScenePreview = ({ data }) => {
 				height: 720
 			})
 			pixiContainer.current.appendChild(app.canvas)
-			app.canvas.style.width = 'stretch'
+			app.canvas.style.width = '100%'
+			app.canvas.style.touchAction = 'unset'
 			appRef.current = app
 		})()
 		return () => {

@@ -219,7 +219,7 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 						.map(o => {
 							return {
 								...o,
-								image: o.image ? URL.createObjectURL(o.image) : null
+								image: o?.image ? URL.createObjectURL(o?.image) : null
 							}
 						})
 					data.options = options

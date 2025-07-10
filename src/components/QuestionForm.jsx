@@ -222,8 +222,8 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 								image: o?.image ? URL.createObjectURL(o?.image) : null
 							}
 						})
+					data.option = option
 					data.options = options
-					console.log(data)
 					setPreviewData(data)
 				}}>プレビューを再生成する</Button>
 				<SelectScenePreview data={previewData}></SelectScenePreview>

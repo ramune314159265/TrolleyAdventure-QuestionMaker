@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
-import { Application, Container } from 'pixi.js'
+import { Application, Assets, Container, Sprite } from 'pixi.js'
 import { useEffect, useRef } from 'react'
 import { FitText } from '../pixiComponents/fitText'
 import { HologramContainer } from '../pixiComponents/hologramContainer'
@@ -81,7 +81,21 @@ export const SelectScenePreview = ({ data }) => {
 				minFontSize: 16
 			})
 			optionText.x = hologramWidth / 2
-			optionText.y = hologramHeight / 2
+			optionText.y = data.options[i].image ? hologramHeight * 0.8 : hologramHeight / 2
+			if (data.options[i].image) {
+				const texture = await Assets.load({
+					src: data.options[i].image,
+					format: 'png',
+					loadParser: 'loadTextures'
+				})
+				const image = new Sprite(texture)
+				image.setSize(hologramWidth * 0.9, hologramHeight * 0.9)
+				image.anchor = { x: 0.5, y: 0.5 }
+				image.x = hologramWidth / 2
+				image.y = hologramHeight / 2
+				optionInnerContainer.addChild(image)
+				URL.revokeObjectURL(data.options[i].image)
+			}
 			optionInnerContainer.addChild(optionText)
 		})
 		app.stage.addChild(optionsContainer)

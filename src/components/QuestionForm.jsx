@@ -211,10 +211,19 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 
 				<Text>プレビュー</Text>
 				<Button onClick={() => {
-					const data = getValues()
+					const data = structuredClone(getValues())
+					data.answer.explanationImage = data.answer.explanationImage ? URL.createObjectURL(data.answer.explanationImage) : null
 					const option = data.options[Math.floor(Math.random() * data.options.length)]
-					const options = [data.answer, option].toSorted(() => Math.random() - 0.5)
+					const options = [data.answer, option]
+						.toSorted(() => Math.random() - 0.5)
+						.map(o => {
+							return {
+								...o,
+								image: o.image ? URL.createObjectURL(o.image) : null
+							}
+						})
 					data.options = options
+					console.log(data)
 					setPreviewData(data)
 				}}>プレビューを再生成する</Button>
 				<SelectScenePreview data={previewData}></SelectScenePreview>

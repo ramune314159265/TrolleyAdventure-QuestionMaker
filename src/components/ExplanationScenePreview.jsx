@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react'
-import { Application, Container } from 'pixi.js'
+import { Application, Assets, Container, Sprite } from 'pixi.js'
 import { useEffect, useRef } from 'react'
 import { HologramContainer } from '../pixiComponents/hologramContainer'
 import { MainText } from '../pixiComponents/mainText'
@@ -32,6 +32,7 @@ export const ExplanationScenePreview = ({ data }) => {
 				width: 1280,
 				height: 720
 			})
+			window.__PIXI_DEVTOOLS__ = { app }
 			pixiContainer.current.appendChild(app.canvas)
 			app.canvas.style.width = 'stretch'
 			appRef.current = app
@@ -88,6 +89,21 @@ export const ExplanationScenePreview = ({ data }) => {
 		explanationText.y = 100
 		explanationInnerContainer.addChild(explanationText)
 		optionsContainer.addChild(explanationHologram)
+		if (data.answer.explanationImage) {
+			(async () => {
+				const texture = await Assets.load({
+					src: data.answer.explanationImage,
+					format: 'png',
+					loadParser: 'loadTextures'
+				})
+				const image = new Sprite(texture)
+				image.setSize(hologramWidth, hologramHeight)
+				image.anchor = { x: 0.5, y: 0.5 }
+				image.x = (1280 / 4) * 1
+				optionsContainer.addChild(image)
+				URL.revokeObjectURL(data.answer.explanationImage)
+			})()
+		}
 		app.stage.addChild(optionsContainer)
 	}, [data])
 

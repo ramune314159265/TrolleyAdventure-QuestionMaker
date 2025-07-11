@@ -123,26 +123,20 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 												<Input {...register(`options.${index}.content`)} ></Input>
 												<FieldErrorText>{errors.options?.[index]?.content?.message}</FieldErrorText>
 											</FieldRoot>
-											<FileUploadRoot
-												invalid={!!errors.options?.[index]?.image}
-												accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
-												onChange={e => {
-													const file = e.target.files?.[0]
-													if (file) {
-														setValue(`options.${index}.image`, file, { shouldDirty: true })
-													}
-												}}
-											>
-												<FileUploadHiddenInput></FileUploadHiddenInput>
-												<FileUploadLabel>不正解の選択肢の画像(できるだけ正方形に近い形)</FileUploadLabel>
-												<Input asChild>
-													<FileUploadTrigger>
-														{watch(`options.${index}.image`)?.name ??
-															<Text color="fg.muted">ここを押して画像を選択</Text>
+											<FieldRoot invalid={!!errors.options?.[index]?.image}>
+												<FieldLabel>不正解の選択肢の画像(できるだけ正方形に近い形)</FieldLabel>
+												<Input
+													type="file"
+													accept="image/jpeg,image/webp,image/png,image/heic"
+													onChange={(e) => {
+														const file = e.target.files?.[0];
+														if (file) {
+															setValue(`options.${index}.image`, file, { shouldDirty: true });
 														}
-													</FileUploadTrigger>
-												</Input>
-											</FileUploadRoot>
+													}}
+												/>
+												<FieldErrorText>{errors.options?.[index]?.content}</FieldErrorText>
+											</FieldRoot>
 											<FieldRoot invalid={!!errors.options?.[index]?.explanation}>
 												<FieldLabel>不正解の解説</FieldLabel>
 												<Input {...register(`options.${index}.explanation`)} ></Input>
@@ -166,8 +160,8 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 				<FileUploadRoot
 					invalid={!!errors.answer?.image}
 					accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
-					onChange={e => {
-						const file = e.target.files?.[0]
+					onFileChange={(details) => {
+						const file = details.acceptedFiles[0]
 						if (file) {
 							setValue(`answer.image`, file, { shouldDirty: true })
 						}
@@ -191,8 +185,8 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 				<FileUploadRoot
 					invalid={!!errors.answer?.explanationImage}
 					accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
-					onChange={e => {
-						const file = e.target.files?.[0]
+					onFileChange={(details) => {
+						const file = details.acceptedFiles[0]
 						if (file) {
 							setValue(`answer.explanationImage`, file, { shouldDirty: true })
 						}

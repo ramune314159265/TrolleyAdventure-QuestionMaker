@@ -79,8 +79,8 @@ export const ExplanationScenePreview = ({ data }) => {
 		explanationInnerContainer.addChild(explanationTopText)
 		const explanationText = new MainText({
 			content: [
-				data.answer.explanation,
-				data.option.explanation
+				data.answer?.explanation,
+				data.option?.explanation
 			].join('\n'),
 			styleOverride: {
 				fontSize: 48,
@@ -94,7 +94,7 @@ export const ExplanationScenePreview = ({ data }) => {
 		explanationText.y = 100
 		explanationInnerContainer.addChild(explanationText)
 		optionsContainer.addChild(explanationHologram)
-		if (data.answer.explanationImage) {
+		if (data.answer?.explanationImage) {
 			(async () => {
 				const texture = await Assets.load({
 					src: data.answer.explanationImage,

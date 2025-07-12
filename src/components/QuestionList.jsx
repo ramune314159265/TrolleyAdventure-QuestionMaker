@@ -1,6 +1,6 @@
-import { Box, Button, VStack } from '@chakra-ui/react'
+import { Box, VStack } from '@chakra-ui/react'
 import { useQuestion } from '../atoms/questions'
-import { downloadQuestionsData } from '../export'
+import { DownloadButton } from './DownloadButton'
 import { Question } from './Question'
 import { QuestionAddButton } from './QuestionAddButton'
 
@@ -21,10 +21,7 @@ export const QuestionList = () => {
 						})
 				}
 				<QuestionAddButton></QuestionAddButton>
-				<Button
-					variant="outline"
-					onClick={() => downloadQuestionsData()}
-				>問題をダウンロードする</Button>
+				<DownloadButton></DownloadButton>
 			</VStack>
 		</>
 	)

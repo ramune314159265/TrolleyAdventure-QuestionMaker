@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react'
-import { Application, Assets, Container, Sprite } from 'pixi.js'
+import { Application, Assets, Container, Graphics } from 'pixi.js'
 import { useEffect, useRef } from 'react'
+import { FitSprite } from '../pixiComponents/fitSprite'
 import { HologramContainer } from '../pixiComponents/hologramContainer'
 import { MainText } from '../pixiComponents/mainText'
 
@@ -78,15 +79,18 @@ export const ExplanationScenePreview = ({ data }) => {
 		explanationInnerContainer.addChild(explanationTopText)
 		const explanationText = new MainText({
 			content: [
-				...stringSplitByLength(data.answer?.explanation ?? '', 12),
-				...stringSplitByLength(data.option?.explanation ?? '', 12)
+				data.answer.explanation,
+				data.option.explanation
 			].join('\n'),
 			styleOverride: {
 				fontSize: 48,
+				wordWrap: true,
+				wordWrapWidth: hologramWidth,
+				breakWords: true,
 			}
 		})
-		explanationText.anchor = { x: 0, y: 0 }
-		explanationText.x = 10
+		explanationText.anchor = { x: 0.5, y: 0 }
+		explanationText.x = hologramWidth / 2
 		explanationText.y = 100
 		explanationInnerContainer.addChild(explanationText)
 		optionsContainer.addChild(explanationHologram)
@@ -97,13 +101,26 @@ export const ExplanationScenePreview = ({ data }) => {
 					format: 'png',
 					loadParser: 'loadTextures'
 				})
-				const image = new Sprite(texture)
-				image.setSize(hologramWidth, hologramHeight)
-				image.anchor = { x: 0.5, y: 0.5 }
+				const image = new FitSprite({ texture, width: hologramWidth, height: hologramHeight })
 				image.x = (1280 / 4) * 1
 				optionsContainer.addChild(image)
 				URL.revokeObjectURL(data.answer.explanationImage)
 			})()
+		} else {
+			const backgroundGraphics = new Graphics()
+			backgroundGraphics.rect(-hologramWidth / 2, -hologramHeight / 2, hologramWidth, hologramHeight)
+			backgroundGraphics.x = (1280 / 4) * -p
+			backgroundGraphics.fill({ color: '#bbbbbb' })
+			optionsContainer.addChild(backgroundGraphics)
+			const noImageText = new MainText({
+				content: 'No Image',
+				styleOverride: {
+					fontSize: 72,
+					fill: '#ffffff'
+				}
+			})
+			noImageText.x = (1280 / 4) * -p
+			optionsContainer.addChild(noImageText)
 		}
 		app.stage.addChild(optionsContainer)
 	}, [data])

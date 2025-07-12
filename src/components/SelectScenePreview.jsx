@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react'
-import { Application, Assets, Container, Sprite } from 'pixi.js'
+import { Application, Assets, Container } from 'pixi.js'
 import { useEffect, useRef } from 'react'
+import { FitSprite } from '../pixiComponents/fitSprite'
 import { FitText } from '../pixiComponents/fitText'
 import { HologramContainer } from '../pixiComponents/hologramContainer'
 
@@ -89,9 +90,7 @@ export const SelectScenePreview = ({ data }) => {
 					format: 'png',
 					loadParser: 'loadTextures'
 				})
-				const image = new Sprite(texture)
-				image.setSize(hologramWidth * 0.9, hologramHeight * 0.9)
-				image.anchor = { x: 0.5, y: 0.5 }
+				const image = new FitSprite({ texture, width: hologramWidth * 0.9, height: hologramHeight * 0.9 })
 				image.x = hologramWidth / 2
 				image.y = hologramHeight / 2
 				optionInnerContainer.addChild(image)

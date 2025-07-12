@@ -109,7 +109,7 @@ export const ExplanationScenePreview = ({ data }) => {
 		} else {
 			const backgroundGraphics = new Graphics()
 			backgroundGraphics.rect(-hologramWidth / 2, -hologramHeight / 2, hologramWidth, hologramHeight)
-			backgroundGraphics.x = (1280 / 4) * -p
+			backgroundGraphics.x = (1280 / 4) * 1
 			backgroundGraphics.fill({ color: '#bbbbbb' })
 			optionsContainer.addChild(backgroundGraphics)
 			const noImageText = new MainText({
@@ -119,7 +119,7 @@ export const ExplanationScenePreview = ({ data }) => {
 					fill: '#ffffff'
 				}
 			})
-			noImageText.x = (1280 / 4) * -p
+			noImageText.x = (1280 / 4) * 1
 			optionsContainer.addChild(noImageText)
 		}
 		app.stage.addChild(optionsContainer)

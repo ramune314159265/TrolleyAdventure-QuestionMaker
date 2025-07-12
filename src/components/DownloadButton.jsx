@@ -25,7 +25,7 @@ export const DownloadButton = () => {
 					setDialogOpen(true)
 				}}
 			>
-				問題をダウンロードするして送る
+				問題をダウンロードして送る
 			</Button>
 			<DialogRoot
 				size="lg"

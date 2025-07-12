@@ -17,7 +17,7 @@ export const QuestionAddButton = () => {
 	return (
 		<>
 			<Button w="full" onClick={() => setDialogOpen(true)}>
-				<HiPlusCircle /> 問題を追加
+				<HiPlusCircle /> 問題を追加する
 			</Button>
 			<QuestionAddDialog
 				dialogState={{ dialogOpen, setDialogOpen }}

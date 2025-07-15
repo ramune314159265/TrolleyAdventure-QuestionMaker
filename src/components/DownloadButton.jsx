@@ -8,10 +8,12 @@ import {
 	DialogTitle,
 	Link,
 	Portal,
-	Text
+	Text,
+	VStack
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { downloadQuestionsData } from '../export'
+import { HowToSend } from './howToSend'
 
 export const DownloadButton = () => {
 	const [dialogOpen, setDialogOpen] = useState(false)
@@ -25,7 +27,7 @@ export const DownloadButton = () => {
 					setDialogOpen(true)
 				}}
 			>
-				問題をダウンロードして送る
+				問題を送る
 			</Button>
 			<DialogRoot
 				size="lg"
@@ -43,15 +45,18 @@ export const DownloadButton = () => {
 								<DialogTitle>問題を送る</DialogTitle>
 							</DialogHeader>
 							<DialogBody>
-								<Text>下のGoogleフォームリンクから今ダウンロードされた「トロッコアドベンチャー問題.zip」を送ってください</Text>
-								<Link
-									variant="underline"
-									href={`https://forms.gle/${formUrl}`}
-									target='_blank'
-									colorPalette="cyan"
-								>
-									https://forms.gle/{formUrl}
-								</Link>
+								<VStack alignItems="stretch">
+									<Text>下のGoogleフォームリンクから今ダウンロードされた「トロッコアドベンチャー問題.zip」を送ってください</Text>
+									<Link
+										variant="underline"
+										href={`https://forms.gle/${formUrl}`}
+										target='_blank'
+										colorPalette="cyan"
+									>
+										https://forms.gle/{formUrl}
+									</Link>
+									<HowToSend></HowToSend>
+								</VStack>
 							</DialogBody>
 							<DialogCloseTrigger asChild>
 								<CloseButton size="sm" />

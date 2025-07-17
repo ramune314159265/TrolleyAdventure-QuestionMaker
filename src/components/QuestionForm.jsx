@@ -1,4 +1,4 @@
-import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, IconButton, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, Text, VStack } from '@chakra-ui/react'
+import { AbsoluteCenter, AccordionItem, AccordionItemContent, AccordionItemIndicator, AccordionItemTrigger, AccordionRoot, AlertIndicator, AlertRoot, AlertTitle, Box, Button, FieldErrorText, FieldLabel, FieldRoot, FileUploadHiddenInput, FileUploadLabel, FileUploadRoot, FileUploadTrigger, HStack, IconButton, Input, NativeSelectField, NativeSelectIndicator, NativeSelectRoot, Span, Text, VStack } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useState } from 'react'
 import { useFieldArray, useForm } from 'react-hook-form'
@@ -137,11 +137,19 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 												/>
 												<FieldErrorText>{errors.options?.[index]?.content}</FieldErrorText>
 											</FieldRoot>
+											<AlertRoot>
+												<AlertIndicator></AlertIndicator>
+												<AlertTitle>文字、画像のどちらか一つ以上を入力してください</AlertTitle>
+											</AlertRoot>
 											<FieldRoot invalid={!!errors.options?.[index]?.explanation}>
 												<FieldLabel>不正解の解説</FieldLabel>
 												<Input {...register(`options.${index}.explanation`)} ></Input>
 												<FieldErrorText>{errors.options?.[index]?.explanation?.message}</FieldErrorText>
 											</FieldRoot>
+											<AlertRoot>
+												<AlertIndicator></AlertIndicator>
+												<AlertTitle>不正解の解説は正解の解説の後に表示されます</AlertTitle>
+											</AlertRoot>
 										</VStack>
 									</AccordionItemContent>
 								</AccordionItem>
@@ -177,11 +185,19 @@ export const QuestionForm = ({ onDataSubmit, onCancel, defaultValues }) => {
 						</FileUploadTrigger>
 					</Input>
 				</FileUploadRoot>
+				<AlertRoot>
+					<AlertIndicator></AlertIndicator>
+					<AlertTitle>文字、画像のどちらか一つ以上を入力してください</AlertTitle>
+				</AlertRoot>
 				<FieldRoot invalid={!!errors.answer?.explanation}>
 					<FieldLabel>正解の解説</FieldLabel>
 					<Input {...register(`answer.explanation`)} ></Input>
 					<FieldErrorText>{errors.answer?.explanation?.message}</FieldErrorText>
 				</FieldRoot>
+				<AlertRoot>
+					<AlertIndicator></AlertIndicator>
+					<AlertTitle>正解の解説は不正解の解説の前に表示されます</AlertTitle>
+				</AlertRoot>
 				<FileUploadRoot
 					invalid={!!errors.answer?.explanationImage}
 					accept={['image/jpeg', 'image/webp', 'image/png', 'image/heic']}
